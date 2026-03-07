@@ -17,6 +17,20 @@ export class Playground {
 
     this.timerButton = this.page.getByTestId("timer-btn");
     this.timerButtonStatus = this.page.getByTestId("timer-result");
+
+    this.inputField = this.page.getByTestId("msg-input");
+    this.inputButton = this.page.getByTestId("msg-send");
+    this.outputMessage = this.page.getByTestId("msg-output");
+
+    this.radiobuttonA = this.page.getByTestId('radio-a');
+    this.radiobuttonB = this.page.getByTestId('radio-b');
+    this.radiobuttonC = this.page.getByTestId('radio-c');
+    this.radiobuttonOutput = this.page.getByTestId('radio-output');
+
+    this.checkbox1 = this.page.getByTestId('chk-1');
+    this.checkbox2 = this.page.getByTestId('chk-2');
+    this.checkbox3 = this.page.getByTestId('chk-3');
+    this.checkboxOutput = this.page.getByTestId('checkbox-count');
   }
 
   async navigateTo() {
@@ -37,35 +51,62 @@ export class Playground {
     }
   }
 
-  async firstClickOnTimerButton(first) {
+  async clickTimerButton(first) {
     const buttonLoadTimeout = 7000;
-    if (first) {
-      await expect(this.timerButton).toBeVisible();
-      await expect(this.timerButtonStatus).toHaveText(
-        "Waiting for click",
-      );
-
+     
       await this.timerButton.click();
       await expect(this.timerButtonStatus).toHaveText("Processing...");
+
       await expect(this.timerButtonStatus).toHaveText("Complete", {timeout: buttonLoadTimeout});
-    }
   }
-  
-  async secondClickOnTimerButton(second) {
-    const buttonLoadTimeout = 7000;
-    if (second) {
-      await expect(this.timerButton).toBeVisible();
-      await expect(this.timerButtonStatus).toHaveText(
-        "Complete",
-      );
 
-      await this.timerButton.click();
-      await expect(this.timerButtonStatus).toHaveText("Processing...");
-      await expect(this.timerButtonStatus).toHaveText("Complete", {
-        timeout: buttonLoadTimeout,
-      });
-    }
+  async insertText(text) {
+
+    await this.inputField.fill("test");
+
+    await this.inputButton.click(); 
+
+    await expect(this.outputMessage).toContainText('Wprowadzono: test');
   }
+
+  async fillWithRandomTextAndSubmit(length = 10) {
+    const randomText = Math.random().toString(36).substring(2, 2 + length);
+    await this.inputField.fill(randomText);
+    await this.inputButton.click();
+    return randomText; // Zwracamy tekst, żeby test wiedział co zostało wpisane
+  }
+
+  async selectRadiobuttonA(radiobuttona) {
+    await this.radiobuttonA.check();
+    await expect(this.radiobuttonOutput).toContainText('Wybrano: Opcja A');
+  }
+
+  async selectRadiobuttonB(radiobuttonb) {
+    await this.radiobuttonB.check();
+    await expect(this.radiobuttonOutput).toContainText('Wybrano: Opcja B');
+  }
+
+  async selectRadiobuttonC(radiobuttonc) {
+    await this.radiobuttonC.check();
+    await expect(this.radiobuttonOutput).toContainText('Wybrano: Opcja C');
+  }
+
+  async selectCheckbox1(checkboxone) {
+    await expect(this.checkbox1).not.toBeChecked();
+    await this.checkbox1.check();
+    
+  }
+
+    async selectCheckbox2(checkboxtwo) {
+    await expect(this.checkbox2).not.toBeChecked();
+    await this.checkbox2.check();
+   }
+
+    async selectCheckbox3(checkboxthree) {
+    await expect(this.checkbox2).not.toBeChecked();
+    await this.checkbox3.check();
+   }
+
 }
 
 module.exports = { Playground };
