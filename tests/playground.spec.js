@@ -17,18 +17,20 @@ test("Button section - button displays correct status after clicking", async ({
 });
 
 test("Button with timer - single click", async ({ page }) => {
-  const buttonLoadTimeout = 7000; // button can be updated between 3 and 7 sec
 
   const playground = new Playground(page);
 
-  await playground.multipleClickOnTimerButton(true);
+  await playground.firstClickOnTimerButton(true);
+  await playground.firstClickOnTimerButton(false);
 });
 
 test("Button with timer - multiple click", async ({ page }) => {
-  // button can be updated between 3 and 7 sec
 
   const playground = new Playground(page);
 
-  await playground.multipleClickOnTimerButton(true);
-  await playground.multipleClickOnTimerButton(false);
+  await playground.firstClickOnTimerButton(true);
+  await playground.secondClickOnTimerButton(true);
+
+  await playground.firstClickOnTimerButton(false);
+  await playground.secondClickOnTimerButton(false);
 });

@@ -37,9 +37,9 @@ export class Playground {
     }
   }
 
-  async multipleClickOnTimerButton(multiple) {
+  async firstClickOnTimerButton(first) {
     const buttonLoadTimeout = 7000;
-    if (multiple) {
+    if (first) {
       await expect(this.timerButton).toBeVisible();
       await expect(this.timerButtonStatus).toHaveText(
         "Waiting for click",
@@ -47,11 +47,18 @@ export class Playground {
 
       await this.timerButton.click();
       await expect(this.timerButtonStatus).toHaveText("Processing...");
-      await expect(this.timerButtonStatus).toHaveText("Complete", {
-        timeout: buttonLoadTimeout,
-      });
-    } else {
-      await expect(this.timerButtonStatus).toHaveText("Complete");
+      await expect(this.timerButtonStatus).toHaveText("Complete", {timeout: buttonLoadTimeout});
+    }
+  }
+  
+  async secondClickOnTimerButton(second) {
+    const buttonLoadTimeout = 7000;
+    if (second) {
+      await expect(this.timerButton).toBeVisible();
+      await expect(this.timerButtonStatus).toHaveText(
+        "Complete",
+      );
+
       await this.timerButton.click();
       await expect(this.timerButtonStatus).toHaveText("Processing...");
       await expect(this.timerButtonStatus).toHaveText("Complete", {
