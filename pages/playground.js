@@ -76,37 +76,26 @@ export class Playground {
     return randomText; // Zwracamy tekst, żeby test wiedział co zostało wpisane
   }
 
-  async selectRadiobuttonA(radiobuttona) {
-    await this.radiobuttonA.check();
-    await expect(this.radiobuttonOutput).toContainText('Wybrano: Opcja A');
+  async selectRadioButton(option) {
+    await this.page.getByTestId(`radio-${option}`).check();
+
+    const optionToUpperCase = option.toUpperCase();
+        
+    await expect(this.page.getByTestId('radio-output')).toContainText(`Wybrano: Opcja ${optionToUpperCase}`);
   }
 
-  async selectRadiobuttonB(radiobuttonb) {
-    await this.radiobuttonB.check();
-    await expect(this.radiobuttonOutput).toContainText('Wybrano: Opcja B');
+  async selectOneCheckbox(option) {
+    await expect(this.page.getByTestId(`chk-${option}`)).not.toBeChecked();
+    await this.page.getByTestId(`chk-${option}`).check();
+
+    await expect(this.page.getByTestId(`chk-${option}`)).toBeChecked();
   }
 
-  async selectRadiobuttonC(radiobuttonc) {
-    await this.radiobuttonC.check();
-    await expect(this.radiobuttonOutput).toContainText('Wybrano: Opcja C');
+  async unselectCheckbox(option) {
+    await expect(this.page.getByTestId(`chk-${option}`)).toBeChecked();
+    await this.page.getByTestId(`chk-${option}`).uncheck();
+    await expect(this.page.getByTestId(`chk-${option}`)).not.toBeChecked();
   }
-
-  async selectCheckbox1(checkboxone) {
-    await expect(this.checkbox1).not.toBeChecked();
-    await this.checkbox1.check();
-    
-  }
-
-    async selectCheckbox2(checkboxtwo) {
-    await expect(this.checkbox2).not.toBeChecked();
-    await this.checkbox2.check();
-   }
-
-    async selectCheckbox3(checkboxthree) {
-    await expect(this.checkbox2).not.toBeChecked();
-    await this.checkbox3.check();
-   }
-
 }
 
 module.exports = { Playground };
