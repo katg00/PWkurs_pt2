@@ -62,4 +62,5 @@ test("Test API - DELETE", async({request}) => {
     expect(response.ok()).toBeTruthy();
 
    expect(await response.text()).toContain("")
+   expect(await response.statusText()).toContain("No Content");
 })
