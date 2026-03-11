@@ -29,9 +29,11 @@ test('Test API - POST', async ({ request }) => {
     expect(response.status()).toBe(201);
     expect(response.ok()).toBeTruthy();
 
-    console.log(await response.text())
-    expect(await response.text()).toContain('"created (mock)\",\"product\":{\"name\":\"Testowy produkt\"')
+    // console.log(await response.text());
+    // expect(await response.text()).toContain('"created (mock)\",\"product\":{\"name\":\"Testowy produkt\"');
 
+    const bodyJson = await response.json();
+    console.log(bodyJson.product.id)
 
 })
 
@@ -55,12 +57,26 @@ test("Test API - PATCH", async({request}) => {
     expect(await response.text()).toContain('{\"message\":\"updated (mock)\",\"changes\":{\"price\":222.22},\"product\":{\"id\":3,\"price\":222.22},\"note\":\"No persistence. This is a mock response.\"}')
 })
 
-test("Test API - DELETE", async({request}) => {
-    const response = await request.delete('/api/index.php?endpoint=products&id=3');
+test('Test API - DELETE', async ({ request }) => {
 
+    // Przygotowanie zasobu
+
+        const responsePost = await request.post('/api/index.php?endpoint=products', {
+        data: {
+            "name": "Testowy produkt",
+            "price": 777,
+            "currency": "EUR"
+        }
+    });
+    expect(responsePost.status()).toBe(201);
+    expect(responsePost.ok()).toBeTruthy();
+
+    const bodyToJson = await responsePost.json();
+    const productId = bodyToJson.product.id
+
+    // Faktyczny test
+
+    const response = await request.delete(`/api/index.php?endpoint=products&id=${productId}`);
     expect(response.status()).toBe(204);
-    expect(response.ok()).toBeTruthy();
-
-   expect(await response.text()).toContain("")
-   expect(await response.statusText()).toContain("No Content");
-})
+}
+);

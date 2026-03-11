@@ -131,5 +131,21 @@ test("Checkbox - select two checkboxes", async({page}) =>{
   await expect(playground.checkboxOutput).toContainText('Zaznaczone: 2/3');
 })
 
+test("Console - gather messages", async ({page}) => {
+  const playground = new Playground(page);
 
+  const consoleMessages = [];
+
+  page.on('console', msg => {
+    consoleMessages.push(msg.text());
+  })
+
+  await page.goto('listenery')
+
+  await expect.poll(() => consoleMessages.length, {
+    timeout: 6000
+  }).toEqual(5);
+
+  console.log(consoleMessages);
+})
 
