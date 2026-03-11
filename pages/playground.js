@@ -65,8 +65,6 @@ export class Playground {
     await this.inputField.fill("test");
 
     await this.inputButton.click(); 
-
-    await expect(this.outputMessage).toContainText('Wprowadzono: test');
   }
 
   async fillWithRandomTextAndSubmit(length = 10) {

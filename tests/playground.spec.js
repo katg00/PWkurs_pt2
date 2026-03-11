@@ -42,6 +42,8 @@ test("Input - insert text and save", async ({page}) => {
   await expect(playground.inputField).toBeEmpty();
   await playground.insertText(true);
 
+  await expect(playground.outputMessage).toContainText('Wprowadzono: test');
+
   //await page.waitForTimeout(5000);
 
 })
@@ -127,7 +129,7 @@ test("Checkbox - select two checkboxes", async({page}) =>{
   await expect(playground.checkboxOutput).toContainText('Zaznaczone: 1/3');
   await playground.selectOneCheckbox('2');
   await expect(playground.checkboxOutput).toContainText('Zaznaczone: 2/3');
-  })
+})
 
 
 
